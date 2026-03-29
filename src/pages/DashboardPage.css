@@ -1,0 +1,133 @@
+.dashboard-page {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.dashboard-header {
+  margin-bottom: 3rem;
+}
+
+.dashboard-header .subtitle {
+  margin-top: 0.5rem;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 900px) {
+  .dashboard-content {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+  }
+}
+
+/* ===== Admin Form ===== */
+.dashboard-form-section {
+  border: 2px dashed var(--dotted-color);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  background-color: var(--bg-surface-elevated);
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.helper-text {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-top: 0.5rem;
+}
+
+.dashboard-actions {
+  margin-top: 1rem;
+  padding-top: 2rem;
+  border-top: 2px dashed var(--dotted-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-btn {
+  min-width: 200px;
+}
+
+.btn-success {
+  background-color: var(--text-primary) !important;
+  color: white !important;
+}
+
+/* ===== Live Preview Card ===== */
+.dashboard-preview-section {
+  position: relative;
+}
+
+.preview-card {
+  background-color: var(--bg-surface-elevated);
+  border: 2px dashed var(--dotted-color);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  position: sticky;
+  top: 100px;
+  transition: box-shadow var(--transition-base);
+}
+
+.preview-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.preview-image-container {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.preview-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.preview-price {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.preview-description {
+  margin-top: 1rem;
+}
+
+.preview-intro {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

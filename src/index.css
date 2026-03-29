@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap');
+
+:root {
+  /* Background */
+  --bg-color: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-muted: #f5f5f7;
+
+  /* Text */
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+
+  /* Accent */
+  --accent-color: #1b8b42;
+  --accent-hover: #148a38;
+  --accent-light: rgba(27, 139, 66, 0.08);
+
+  /* Borders & Dividers */
+  --border-color: #d2d2d7;
+  --dotted-color: rgba(0, 0, 0, 0.18);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 14px 0 rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 8px 28px 0 rgb(0 0 0 / 0.08);
+  --shadow-card: 0 2px 8px 0 rgb(0 0 0 / 0.04), 0 0 0 1px rgb(0 0 0 / 0.04);
+
+  /* Radii - Apple style: generous rounding */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* Font */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+
+  /* Layout */
+  --max-width: 980px;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ===== Base Button ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+  letter-spacing: -0.01em;
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(27, 139, 66, 0.25);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+  border-left: 2px dashed var(--dotted-color);
+  border-right: 2px dashed var(--dotted-color);
+  min-height: 100vh;
+}
+
+/* ===== Typography ===== */
+.h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+}
+
+.h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+}
+
+.text-body {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* ===== Dotted Divider (Editucation-style) ===== */
+.dotted-divider {
+  border: none;
+  border-top: 2px dashed var(--dotted-color);
+  margin: 0;
+}
+
+.section-gap {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+
+/* ===== Selection ===== */
+::selection {
+  background-color: var(--accent-light);
+  color: var(--text-primary);
+}
+
+/* ===== Scrollbar (Webkit) ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dotted-color);
+  border-radius: var(--radius-full);
+}
