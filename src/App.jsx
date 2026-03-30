@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import ProductPage from './pages/ProductPage';
 import CheckoutPage from './pages/CheckoutPage';
 import DashboardPage from './pages/DashboardPage';
+
 const defaultProductData = {
   title: "Apple Ui SFX",
   author: "por João Silva",
@@ -13,6 +14,11 @@ const defaultProductData = {
   descriptionBody: "Este pacote abrangente inclui tudo o que você precisa para sonorizar suas interfaces com elegância e minimalismo. Desenvolvido com técnicas profissionais para garantir áudio nítido e imersivo, perfeito para aplicativos, sites e protótipos. Inclui mais de 150 arquivos de áudio de alta qualidade (WAV e MP3), categorizados por interações (cliques, notificações, alertas, transições) e acesso vitalício a futuras atualizações."
 };
 
+// Protected route: only accessible if logged in
+function ProtectedRoute({ children }) {
+  const isLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+  return isLoggedIn ? children : <Navigate to="/" replace />;
+}
 
 function App() {
   const navigate = useNavigate();
@@ -29,25 +35,27 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     navigate('/checkout');
   };
-  
+
   const goToProduct = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     navigate('/');
   };
 
-  const goToDashboard = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    navigate('/dashboard');
-  };
-
   return (
     <div className="app-container">
-      <Header onDashboardClick={goToDashboard} onLogoClick={goToProduct} />
+      <Header onLogoClick={goToProduct} />
       <main>
         <Routes>
           <Route path="/" element={<ProductPage data={productData} onBuyClick={goToCheckout} />} />
           <Route path="/checkout" element={<CheckoutPage data={productData} onBackClick={goToProduct} />} />
-          <Route path="/dashboard" element={<DashboardPage data={productData} onSave={setProductData} onBackClick={goToProduct} />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage data={productData} onSave={setProductData} onBackClick={goToProduct} />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </div>
