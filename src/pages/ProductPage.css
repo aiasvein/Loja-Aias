@@ -123,13 +123,14 @@
 }
 
 .pricing-card {
-  border: 2px dashed var(--dotted-color);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 2rem;
   background-color: var(--bg-surface-elevated);
   position: sticky;
   top: 100px;
   transition: box-shadow var(--transition-base);
+  box-shadow: var(--shadow-card);
 }
 
 .pricing-card:hover {
@@ -163,7 +164,7 @@
 
 /* ===== Reviews Section ===== */
 .reviews-section {
-  /* spacing handled by section-gap */
+  display: block;
 }
 
 .reviews-header {
@@ -202,11 +203,12 @@
 }
 
 .review-card {
-  border: 2px dashed var(--dotted-color);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   background-color: var(--bg-surface-elevated);
   transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
 .review-card:hover {
@@ -248,14 +250,15 @@
 
 /* ===== Leave Review ===== */
 .leave-review-section {
-  /* spacing handled by section-gap */
+  display: block;
 }
 
 .leave-review-card {
-  border: 2px dashed var(--dotted-color);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 2.5rem;
   background-color: var(--bg-surface-elevated);
+  box-shadow: var(--shadow-sm);
 }
 
 .leave-review-card .subtitle {

@@ -26,10 +26,11 @@
 
 /* ===== Admin Form ===== */
 .dashboard-form-section {
-  border: 2px dashed var(--dotted-color);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 2.5rem;
   background-color: var(--bg-surface-elevated);
+  box-shadow: var(--shadow-card);
 }
 
 .admin-form {
@@ -69,12 +70,13 @@
 
 .preview-card {
   background-color: var(--bg-surface-elevated);
-  border: 2px dashed var(--dotted-color);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 2rem;
   position: sticky;
   top: 100px;
   transition: box-shadow var(--transition-base);
+  box-shadow: var(--shadow-card);
 }
 
 .preview-card:hover {
