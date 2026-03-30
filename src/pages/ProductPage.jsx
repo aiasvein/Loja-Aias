@@ -41,11 +41,36 @@ function ProductPage({ data, onBuyClick }) {
 
         <div className="pricing-sidebar">
           <div className="pricing-card">
-            <span className="price-label">Preço</span>
-            <div className="price-amount">R$ {data.price}</div>
+            <div className="pricing-badge">🔥 Mais vendido</div>
+
+            <div className="pricing-top">
+              <span className="price-label">Acesso Vitalício</span>
+              <div className="price-amount">R$ {data.price}</div>
+              <div className="price-per-use">pagamento único • sem mensalidade</div>
+            </div>
+
             <button className="btn btn-primary buy-btn" onClick={onBuyClick}>
-              Comprar
+              🛒 Comprar Agora
             </button>
+
+            <p className="pricing-guarantee">
+              🔒 Pagamento 100% seguro
+            </p>
+
+            <hr className="pricing-divider" />
+
+            <ul className="pricing-features">
+              <li><span className="feat-check">✓</span> +150 arquivos WAV e MP3</li>
+              <li><span className="feat-check">✓</span> Acesso a atualizações futuras</li>
+              <li><span className="feat-check">✓</span> Licença comercial incluída</li>
+              <li><span className="feat-check">✓</span> Download imediato</li>
+              <li><span className="feat-check">✓</span> Suporte por e-mail</li>
+            </ul>
+
+            <div className="pricing-social-proof">
+              <span className="proof-avatars">😊😊😊</span>
+              <span className="proof-text">+2.800 clientes satisfeitos</span>
+            </div>
           </div>
         </div>
       </div>
