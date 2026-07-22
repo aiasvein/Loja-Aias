@@ -4,6 +4,7 @@ import Header from './components/Header';
 import ProductPage from './pages/ProductPage';
 import CheckoutPage from './pages/CheckoutPage';
 import DashboardPage from './pages/DashboardPage';
+import VscoTrapPage from './pages/VscoTrapPage';
 
 const defaultProductData = {
   title: "Apple Ui SFX",
@@ -42,23 +43,34 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <Header onLogoClick={goToProduct} />
-      <main>
-        <Routes>
-          <Route path="/" element={<ProductPage data={productData} onBuyClick={goToCheckout} />} />
-          <Route path="/checkout" element={<CheckoutPage data={productData} onBackClick={goToProduct} />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage data={productData} onSave={setProductData} onBackClick={goToProduct} />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </main>
-    </div>
+    <>
+      {/* VSCO trap page has its own standalone layout */}
+      <Routes>
+        <Route path="/vsco" element={<VscoTrapPage />} />
+        <Route
+          path="*"
+          element={
+            <div className="app-container">
+              <Header onLogoClick={goToProduct} />
+              <main>
+                <Routes>
+                  <Route path="/" element={<ProductPage data={productData} onBuyClick={goToCheckout} />} />
+                  <Route path="/checkout" element={<CheckoutPage data={productData} onBackClick={goToProduct} />} />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <DashboardPage data={productData} onSave={setProductData} onBackClick={goToProduct} />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </main>
+            </div>
+          }
+        />
+      </Routes>
+    </>
   );
 }
 

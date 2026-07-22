@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import './DashboardPage.css';
+import { supabase } from '../lib/supabaseClient';
 
 const EMOJI_LIST = [
   '🎵','🎶','🎧','🔊','🎙️','🎚️','🔔','🎼','🎹','🥁',
@@ -11,6 +12,127 @@ const EMOJI_LIST = [
 
 const MAX_MEDIA = 10;
 
+// ─── VSCO Tracker Component ───────────────────────────────
+function VscoTracker() {
+  const [clicks, setClicks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [clearing, setClearing] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const fetchClicks = useCallback(async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('vsco_clicks')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100);
+    if (!error) setClicks(data || []);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => { fetchClicks(); }, [fetchClicks]);
+
+  const clearAll = async () => {
+    if (!window.confirm('Tem certeza que quer apagar todos os registros?')) return;
+    setClearing(true);
+    await supabase.from('vsco_clicks').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    setClicks([]);
+    setClearing(false);
+  };
+
+  const copyLink = () => {
+    const link = `${window.location.origin}/vsco`;
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const formatDate = (iso) => {
+    const d = new Date(iso);
+    return d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+  };
+
+  return (
+    <div className="vsco-tracker-section">
+      {/* Header */}
+      <div className="tracker-header">
+        <div>
+          <h2 className="tracker-title">🎣 VSCO Tracker</h2>
+          <p className="tracker-subtitle">
+            {clicks.length} acesso{clicks.length !== 1 ? 's' : ''} registrado{clicks.length !== 1 ? 's' : ''}
+          </p>
+        </div>
+        <div className="tracker-actions">
+          <button className="tracker-btn tracker-btn--copy" onClick={copyLink}>
+            {copied ? '✓ Copiado!' : '🔗 Copiar link'}
+          </button>
+          <button className="tracker-btn tracker-btn--refresh" onClick={fetchClicks} disabled={loading}>
+            {loading ? '...' : '↺ Atualizar'}
+          </button>
+          <button className="tracker-btn tracker-btn--clear" onClick={clearAll} disabled={clearing}>
+            {clearing ? 'Apagando...' : '🗑️ Limpar'}
+          </button>
+        </div>
+      </div>
+
+      {/* Link info */}
+      <div className="tracker-link-box">
+        <span className="tracker-link-label">🔗 Seu link de rastreamento:</span>
+        <code className="tracker-link-url">{window.location.origin}/vsco</code>
+      </div>
+
+      {/* Table */}
+      {loading ? (
+        <div className="tracker-loading">Carregando registros...</div>
+      ) : clicks.length === 0 ? (
+        <div className="tracker-empty">
+          <div className="tracker-empty-icon">📭</div>
+          <p>Nenhum acesso ainda. Compartilhe o link e aguarde!</p>
+        </div>
+      ) : (
+        <div className="tracker-table-wrapper">
+          <table className="tracker-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Horário</th>
+                <th>Cidade</th>
+                <th>País</th>
+                <th>ISP / Operadora</th>
+                <th>Dispositivo</th>
+                <th>Browser</th>
+                <th>IP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {clicks.map((c, i) => (
+                <tr key={c.id}>
+                  <td className="tracker-num">{clicks.length - i}</td>
+                  <td className="tracker-date">{formatDate(c.created_at)}</td>
+                  <td>
+                    <span className="tracker-city">{c.city || '—'}</span>
+                    {c.region && <span className="tracker-region">, {c.region}</span>}
+                  </td>
+                  <td>{c.country || '—'}</td>
+                  <td className="tracker-isp">{c.isp || '—'}</td>
+                  <td>
+                    <span className={`tracker-device tracker-device--${(c.device || 'desktop').toLowerCase()}`}>
+                      {c.device === 'Mobile' ? '📱' : c.device === 'Tablet' ? '📟' : '💻'} {c.device}
+                    </span>
+                  </td>
+                  <td>{c.browser || '—'}</td>
+                  <td className="tracker-ip">{c.ip || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Dashboard Main ────────────────────────────────────────
 function DashboardPage({ data, onSave, onBackClick }) {
   const [formData, setFormData] = useState({
     ...data,
@@ -18,6 +140,7 @@ function DashboardPage({ data, onSave, onBackClick }) {
   });
   const [isSaved, setIsSaved] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(null); // 'intro' | 'body'
+  const [activeTab, setActiveTab] = useState('produto'); // 'produto' | 'tracker'
   const [activeMediaTab, setActiveMediaTab] = useState(0);
   const introRef = useRef(null);
   const bodyRef = useRef(null);
@@ -77,6 +200,27 @@ function DashboardPage({ data, onSave, onBackClick }) {
     setIsSaved(false);
   };
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Small warning just in case
+    if (file.type.startsWith('video/') && file.size > 50 * 1024 * 1024) {
+      alert('Aviso: Vídeos muito grandes podem exceder o limite de memória do navegador. Se isso acontecer, use um link do YouTube.');
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      updateMedia(activeMediaTab, 'url', reader.result);
+      if (file.type.startsWith('video/')) {
+        updateMedia(activeMediaTab, 'type', 'video');
+      } else {
+        updateMedia(activeMediaTab, 'type', 'image');
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const saveData = {
@@ -96,11 +240,29 @@ function DashboardPage({ data, onSave, onBackClick }) {
         <button className="back-btn" onClick={onBackClick}>
           ← Voltar para Loja
         </button>
-        <h1 className="h2 form-title">Dashboard Produto</h1>
-        <p className="subtitle text-body">Altere as informações públicas do seu produto em tempo real.</p>
+        <h1 className="h2 form-title">Dashboard</h1>
+        <p className="subtitle text-body">Gerencie seu produto e veja quem acessou seu link VSCO.</p>
       </div>
 
-      <div className="dashboard-content">
+      {/* ── Tab Navigation ── */}
+      <div className="dashboard-tabs">
+        <button
+          className={`dashboard-tab ${activeTab === 'produto' ? 'active' : ''}`}
+          onClick={() => setActiveTab('produto')}
+        >
+          🛍️ Produto
+        </button>
+        <button
+          className={`dashboard-tab ${activeTab === 'tracker' ? 'active' : ''}`}
+          onClick={() => setActiveTab('tracker')}
+        >
+          🎣 VSCO Tracker
+        </button>
+      </div>
+
+      {activeTab === 'tracker' && <VscoTracker />}
+
+      {activeTab === 'produto' && <div className="dashboard-content">
         <div className="dashboard-form-section">
           <form className="admin-form" onSubmit={handleSubmit}>
 
@@ -172,12 +334,26 @@ function DashboardPage({ data, onSave, onBackClick }) {
                   <label>
                     {currentMedia.type === 'video' ? 'URL do Vídeo (YouTube embed, .mp4)' : 'URL da Imagem'}
                   </label>
-                  <input
-                    type="text"
-                    value={currentMedia.url}
-                    onChange={(e) => updateMedia(activeMediaTab, 'url', e.target.value)}
-                    placeholder={currentMedia.type === 'video' ? 'https://www.youtube.com/embed/...' : 'https://... ou /arquivo.png'}
-                  />
+                  <div className="upload-row">
+                    <input
+                      type="text"
+                      className="media-url-input"
+                      value={currentMedia.url}
+                      onChange={(e) => updateMedia(activeMediaTab, 'url', e.target.value)}
+                      placeholder={currentMedia.type === 'video' ? 'https://www.youtube.com/embed/...' : 'https://... ou /arquivo.png'}
+                    />
+                    <div className="upload-btn-wrapper">
+                      <button type="button" className="btn btn-outline btn-upload">
+                        📁 Do PC
+                      </button>
+                      <input 
+                        type="file" 
+                        accept="image/*,video/mp4,video/webm" 
+                        onChange={handleFileUpload} 
+                        title="Fazer upload de arquivo"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Preview inline */}
@@ -331,7 +507,7 @@ function DashboardPage({ data, onSave, onBackClick }) {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

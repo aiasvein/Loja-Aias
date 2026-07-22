@@ -1,0 +1,308 @@
+/* =============================================
+   VSCO TRAP PAGE — Authentic VSCO look & feel
+   ============================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.vsco-root {
+  min-height: 100vh;
+  background: #fff;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+.vsco-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+  border-bottom: 1px solid #e8e8e8;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 100;
+}
+
+.vsco-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #444;
+  letter-spacing: 0.02em;
+}
+
+.vsco-nav span {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.vsco-nav span:hover {
+  color: #000;
+}
+
+.vsco-btn-join {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.vsco-btn-join:hover {
+  background: #333;
+}
+
+/* ── Logo ── */
+.vsco-logo {
+  display: flex;
+  align-items: center;
+}
+
+.vsco-logo svg {
+  width: 72px;
+  height: auto;
+  fill: #1a1a1a;
+}
+
+.vsco-logo--small svg {
+  width: 48px;
+}
+
+/* ── Main ── */
+.vsco-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+/* ── Loading Skeleton ── */
+.vsco-loading {
+  width: 100%;
+  max-width: 640px;
+}
+
+.vsco-profile-skeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton-avatar,
+.skeleton-name,
+.skeleton-handle,
+.skeleton-cell {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 2px;
+}
+
+.skeleton-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+
+.skeleton-name {
+  width: 160px;
+  height: 16px;
+}
+
+.skeleton-handle {
+  width: 100px;
+  height: 12px;
+  opacity: 0.7;
+  margin-bottom: 24px;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  width: 100%;
+}
+
+.skeleton-cell {
+  aspect-ratio: 1;
+  border-radius: 0;
+}
+
+/* ── Error State ── */
+.vsco-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.vsco-error-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 420px;
+  padding: 0 20px;
+  animation: fadeInUp 0.5s ease both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.vsco-error-icon {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 24px;
+  color: #999;
+}
+
+.vsco-error-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.vsco-error-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.vsco-error-subtitle {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.vsco-error-hint {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.vsco-error-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.vsco-btn-primary {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+
+.vsco-btn-primary:hover {
+  background: #333;
+}
+
+.vsco-btn-secondary {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1.5px solid #d0d0d0;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.vsco-btn-secondary:hover {
+  border-color: #999;
+  color: #333;
+}
+
+.vsco-error-code {
+  font-size: 11px;
+  color: #bbb;
+  letter-spacing: 0.04em;
+}
+
+/* ── Footer ── */
+.vsco-footer {
+  border-top: 1px solid #e8e8e8;
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.vsco-footer-links {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: #888;
+}
+
+.vsco-footer-links span {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.vsco-footer-links span:hover {
+  color: #333;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .vsco-header {
+    padding: 0 16px;
+  }
+
+  .vsco-nav span {
+    display: none;
+  }
+
+  .vsco-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .vsco-footer-links {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
